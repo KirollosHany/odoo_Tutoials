@@ -1,0 +1,18 @@
+<odoo>
+
+    <!-- Inherit Form View to Modify it -->
+    <record id="opportunity_view_form_inherit" model="ir.ui.view">
+        <field name="name">opportunity.crm.lead.form.inherit</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field name="costing"/>
+                <!-- Add your fields or attributes here -->
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

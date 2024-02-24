@@ -1,0 +1,66 @@
+<odoo>
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate.property.view.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Properties">
+                <header>
+
+                    <field name="state" widget="statusbar" statusbar_visible="offer_received,offer_accepted,sold" options="{'clickable': '1'}"/>
+
+                    <button name="new_action" type="object" string="New" class="btn-primary" invisible="state != 'new'"/>
+                    <button name="offer_recive" type="object" string="Received" class="btn-warning" invisible="state in ['sold', 'canceled' , 'offer_received']"/>
+                    <button name="offer_accept" type="object" string="Accepted" class="btn-warning" invisible="state in ['sold', 'canceled' ,'new']"/>
+                    <button name="sold_action" type="object" string="Sold" class="btn-warning" invisible="state == 'sold'"/>
+                    <button name="cancel_action" type="object" string="Cancel" class="btn-danger" invisible="state in ['sold', 'new']"/>
+
+
+
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name" readonly="state != 'new'"/>
+                        <field name="description" />
+                        <field name="date"/>
+
+                    </group>
+                </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids" options="{'post_refresh': 'recipients'}"/>
+                    </div>
+            </form>
+        </field>
+    </record>
+    
+    <record id="estate_property_view_tree" model="ir.ui.view">
+        <field name="name">estate.property.view.tree</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <tree string="Properties">
+                <field name="name"/>
+                <field name="description" />
+                <field name="date"/>
+                <field name="state"/>
+
+            </tree>
+        </field>
+    </record>
+    
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Real Estate</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- This Menu Item will appear in the Upper bar, That's why It needs NO parent or action -->
+    <menuitem id="estate_root" name="Real Estate" sequence="5"/>
+
+    <!-- This Menu Item Must have a parent -->
+    <menuitem id="real_estate_categ" name="Properties" parent="estate_root" sequence="1"/>
+
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem id="estate_action" name="Property" parent="real_estate_categ" action="estate_property_action" sequence="1"/>
+</odoo>

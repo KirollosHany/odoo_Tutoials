@@ -1,0 +1,26 @@
+<odoo>
+    <!-- Inherit Form View to Modify it -->
+    <record id="employee_code_view_form_inherit" model="ir.ui.view">
+        <field name="name">code.hr.employee.view.form.inherit</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='parent_id']" position="before">
+                <field name="Employee_Code"/>
+                <!-- Add your fields or attributes here -->
+            </xpath>
+            <xpath expr="//field[@name='work_email']" position="after">
+                <field name="Emp_start_date"/>
+                <!-- Add your fields or attributes here -->
+            </xpath>
+
+            <xpath expr="//field[@name='Emp_start_date']" position="before">
+                <field name="Emp_type"/>
+                <!-- Add your fields or attributes here -->
+            </xpath>
+
+
+        </field>
+    </record>
+</odoo>
