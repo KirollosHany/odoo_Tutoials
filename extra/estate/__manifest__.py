@@ -23,7 +23,13 @@ Real Estate Property APP
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        "views/estate_property_offer_views.xml",
+        "views/estate_property_tag_views.xml",
+        "views/estate_property_type_views.xml",
         'views/estate_property_view.xml',
+        "views/res_users_views.xml",
+        "views/estate_menus.xml",
+
         # 'views/templates.xml',
     ],
     # only loaded in demonstration mode

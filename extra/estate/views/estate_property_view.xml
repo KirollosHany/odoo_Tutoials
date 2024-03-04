@@ -6,24 +6,73 @@
             <form string="Properties">
                 <header>
 
-                    <field name="state" widget="statusbar" statusbar_visible="offer_received,offer_accepted,sold" options="{'clickable': '1'}"/>
+<!--                    <field name="state" widget="statusbar" statusbar_visible="offer_received,offer_accepted,sold" options="{'clickable': '1'}"/>-->
 
-                    <button name="new_action" type="object" string="New" class="btn-primary" invisible="state != 'new'"/>
-                    <button name="offer_recive" type="object" string="Received" class="btn-warning" invisible="state in ['sold', 'canceled' , 'offer_received']"/>
-                    <button name="offer_accept" type="object" string="Accepted" class="btn-warning" invisible="state in ['sold', 'canceled' ,'new']"/>
-                    <button name="sold_action" type="object" string="Sold" class="btn-warning" invisible="state == 'sold'"/>
-                    <button name="cancel_action" type="object" string="Cancel" class="btn-danger" invisible="state in ['sold', 'new']"/>
+<!--                    <button name="new_action" type="object" string="New" class="btn-primary" invisible="state != 'new'"/>-->
+<!--                    <button name="offer_recive" type="object" string="Received" class="btn-warning" invisible="state in ['sold', 'canceled' , 'offer_received']"/>-->
+<!--                    <button name="offer_accept" type="object" string="Accepted" class="btn-warning" invisible="state in ['sold', 'canceled' ,'new']"/>-->
+<!--                    <button name="sold_action" type="object" string="Sold" class="btn-warning" invisible="state in ('sold' , 'canceled')"/>-->
+<!--                    <button name="cancel_action" type="object" string="Cancel" class="btn-danger" invisible="state in ['sold', 'new']"/>-->
 
+                    <button name="action_sold" type="object" string="Sold" invisible="state  not in ['new','offer_received','']"/>
+                    <button name="action_sold" type="object" string="Sold" invisible="state != 'offer_accepted'" class="oe_highlight"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state not in ['new','offer_received','offer_accepted']"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
 
 
                 </header>
                 <sheet>
-                    <group>
-                        <field name="name" readonly="state != 'new'"/>
-                        <field name="description" />
-                        <field name="date"/>
 
+                        <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="state != 'new'"/>
+                        </h1>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                    </div>
+                    <group>
+                        <group>
+<!--                            <field name="description" />-->
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
+
+                        </group>
+
+                        <group>
+                            <field name="expected_price"/>
+                            <field name="best_price"/>
+                            <field name="selling_price"/>
+                        </group>
                     </group>
+
+                     <notebook>
+                        <page string="Description">
+                            <group>
+                                <group>
+                                    <field name="description"/>
+                                    <field name="bedrooms"/>
+                                    <field name="living_area"/>
+                                    <field name="facades"/>
+                                    <field name="garage"/>
+                                    <field name="garden"/>
+                                    <field name="garden_area" invisible = "(garden == False)"/>
+                                    <field name="garden_orientation" invisible="garden  == 0"/>
+                                    <field name="total_area"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids" readonly="(state in ('offer_accepted', 'sold', 'canceled'))"/>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <group>
+                                    <field name="user_id"/>
+                                    <field name="buyer_id"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+
                 </sheet>
                     <div class="oe_chatter">
                         <field name="message_follower_ids"/>
@@ -39,10 +88,17 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <tree string="Properties">
-                <field name="name"/>
-                <field name="description" />
-                <field name="date"/>
-                <field name="state"/>
+                 <field name="name"/>
+                <field name="user_id" optional="hide"/>
+                <field name="property_type_id"/>
+                <field name="postcode"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="bedrooms"/>
+                <field name="total_area"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="date_availability" optional="hide"/>
+                <field name="state" invisible="0" optional="hide"/>
 
             </tree>
         </field>
@@ -55,12 +111,12 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <!-- This Menu Item will appear in the Upper bar, That's why It needs NO parent or action -->
-    <menuitem id="estate_root" name="Real Estate" sequence="5"/>
+<!--    &lt;!&ndash; This Menu Item will appear in the Upper bar, That's why It needs NO parent or action &ndash;&gt;-->
+<!--    <menuitem id="estate_root" name="Real Estate" sequence="5"/>-->
 
-    <!-- This Menu Item Must have a parent -->
-    <menuitem id="real_estate_categ" name="Properties" parent="estate_root" sequence="1"/>
+<!--    &lt;!&ndash; This Menu Item Must have a parent &ndash;&gt;-->
+<!--    <menuitem id="real_estate_categ" name="Properties" parent="estate_root" sequence="1"/>-->
 
-    <!-- This Menu Item must have a parent and an action -->
-    <menuitem id="estate_action" name="Property" parent="real_estate_categ" action="estate_property_action" sequence="1"/>
+<!--    &lt;!&ndash; This Menu Item must have a parent and an action &ndash;&gt;-->
+<!--    <menuitem id="estate_action" name="Property" parent="real_estate_categ" action="estate_property_action" sequence="1"/>-->
 </odoo>
