@@ -48,6 +48,11 @@ class EstateProperty(models.Model):
         string="Garden Orientation",
     )
 
+    #
+    priority = fields.Selection([('0', 'Low'), ('1', 'Normal'), ('2', 'Hot')], default='1')
+
+    #
+
     # Special
     state = fields.Selection(
         selection=[
@@ -56,6 +61,7 @@ class EstateProperty(models.Model):
             ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("canceled", "Canceled"),
+            ("Invoicing", "Create Invoice")
         ],
         string="Status",
         required=True,
@@ -132,4 +138,11 @@ class EstateProperty(models.Model):
     def action_cancel(self):
         if "sold" in self.mapped("state"):
             raise UserError("Sold properties cannot be canceled.")
+        if not self.env.user.has_group('estate.employee_manager'):
+            raise UserError("Only Admin users can cancel properties.")
         return self.write({"state": "canceled"})
+
+    def action_invoice(self):
+        if "canceled" in self.mapped("state"):
+            raise UserError("Invoicing properties cannot be Created.")
+        return self.write({"state": "Invoicing"})

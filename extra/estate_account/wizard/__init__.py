@@ -1,0 +1,1 @@
+from . import insata_sale

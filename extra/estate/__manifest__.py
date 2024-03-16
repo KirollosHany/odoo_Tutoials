@@ -18,11 +18,12 @@ Real Estate Property APP
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'mail'],
+    'depends': ['base', 'mail', 'product'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'security/security.xml',
         "views/estate_property_offer_views.xml",
         "views/estate_property_tag_views.xml",
         "views/estate_property_type_views.xml",

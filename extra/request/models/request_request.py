@@ -22,21 +22,46 @@ class request(models.Model):
     tracking = True,
     )
     reason = fields.Char(string="Reason")
+
+    project = fields.Many2one('project.project', string='Project', required=True, tracking=True)
+
+    department_id = fields.Many2one(
+        'hr.department',
+        string='Department',
+        required=True,
+        copy=True,
+    )
+
+    approve_manager_id = fields.Many2one(
+        'hr.employee',
+        string='Department Manager',
+        #readonly=True,
+        copy=False,
+        # related='employee_'
+    )
+    reject_manager_id = fields.Many2one(
+        'hr.employee',
+        string='Department Manager Reject',
+        readonly=True,
+    )
+    #
     date = fields.Datetime(string="Date", default=fields.Datetime.now(), readonly=1)
    # f_app_name = fields.Many2one("employee_parent_id", string="Employee Name", tracking=True )
-    manager_id = fields.Many2one('hr.employee', string='Manager', tracking=True, check_company=True)
+   #  manager_id = fields.Many2one('hr.employee', string='Manager', tracking=True, check_company=True)
 
 
 
-    def _update_employee_manager(self, manager_id):
-        employees = self.env['hr.employee']
-        for department in self:
-            employees = employees | self.env['hr.employee'].search([
-                ('id', '!=', manager_id),
-                ('department_id', '=', department.id),
-                ('parent_id', '=', department.manager_id.id)
-            ])
-        employees.write({'parent_id': manager_id})
+    # def _update_employee_manager(self, manager_id):
+    #     employees = self.env['hr.employee']
+    #     for department in self:
+    #         employees = employees | self.env['hr.employee'].search([
+    #             ('id', '!=', manager_id),
+    #             ('department_id', '=', department.id),
+    #             ('parent_id', '=', department.manager_id.id)
+    #         ])
+    #     employees.write({'parent_id': manager_id})
+
+
 
 
 

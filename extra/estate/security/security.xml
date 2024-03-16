@@ -1,0 +1,21 @@
+<odoo>
+    <data>
+        <record id="estate_security_cat" model="ir.module.category">
+            <field name="name">Real Estate</field>
+            <field name="sequence" eval="1"/>
+        </record>
+
+        <record id="employee_user" model="res.groups">
+            <field name="name">Broker</field>
+            <field name="category_id" ref="estate.estate_security_cat"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="employee_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="estate_security_cat"/>
+            <field name="implied_ids" eval="[(4, ref('estate.employee_user'))]"/>
+        </record>
+
+    </data>
+</odoo>

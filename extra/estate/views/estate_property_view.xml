@@ -7,30 +7,38 @@
                 <header>
 
 <!--                    <field name="state" widget="statusbar" statusbar_visible="offer_received,offer_accepted,sold" options="{'clickable': '1'}"/>-->
-
 <!--                    <button name="new_action" type="object" string="New" class="btn-primary" invisible="state != 'new'"/>-->
 <!--                    <button name="offer_recive" type="object" string="Received" class="btn-warning" invisible="state in ['sold', 'canceled' , 'offer_received']"/>-->
 <!--                    <button name="offer_accept" type="object" string="Accepted" class="btn-warning" invisible="state in ['sold', 'canceled' ,'new']"/>-->
 <!--                    <button name="sold_action" type="object" string="Sold" class="btn-warning" invisible="state in ('sold' , 'canceled')"/>-->
 <!--                    <button name="cancel_action" type="object" string="Cancel" class="btn-danger" invisible="state in ['sold', 'new']"/>-->
 
+
                     <button name="action_sold" type="object" string="Sold" invisible="state  not in ['new','offer_received','']"/>
                     <button name="action_sold" type="object" string="Sold" invisible="state != 'offer_accepted'" class="oe_highlight"/>
                     <button name="action_cancel" type="object" string="Cancel" invisible="state not in ['new','offer_received','offer_accepted']"/>
+                    <button name="action_invoice" type="object" string="Create Invoice" invisible="state in ['new','offer_received','offer_accepted']"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
 
 
                 </header>
                 <sheet>
 
-                        <div class="oe_title">
+                    <div class="oe_title">
                         <h1>
                             <field name="name" readonly="state != 'new'"/>
                         </h1>
+
+                        <h2>
+                            <field name="priority" widget="priority"/>
+                        </h2>
+
                         <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     </div>
                     <group>
                         <group>
+                            <field name="property_type_id"/>
+
 <!--                            <field name="description" />-->
                             <field name="postcode"/>
                             <field name="date_availability"/>
@@ -88,7 +96,8 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <tree string="Properties">
-                 <field name="name"/>
+                <field name="name"/>
+                <field name="property_type_id"/>
                 <field name="user_id" optional="hide"/>
                 <field name="property_type_id"/>
                 <field name="postcode"/>
@@ -103,12 +112,45 @@
             </tree>
         </field>
     </record>
+
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+     <field name="name">estate.property.view.kanban</field>
+      <field name="model">estate.property</field>
+     <field name="arch" type="xml">
+
+         <kanban default_group_by="state" records_draggable="0">
+       <field name="state"/>
+        <templates>
+        <t t-name="kanban-box">
+
+         <div class="oe_kanban_global_click">
+                            <div>
+                                <strong class="o_kanban_record_title">
+                                    <field name="name"/>
+                                </strong>
+                            </div>
+                            <div>
+                                Expected Price: <field name="expected_price"/>
+                            </div>
+                            <div t-if="record.state.raw_value == 'offer_received'">
+                                Best Offer: <field name="best_price"/>
+                            </div>
+                            <div t-if="record.selling_price.raw_value">
+                                Selling Price: <field name="selling_price"/>
+                            </div>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+         </div>
+        </t>
+        </templates>
+         </kanban>
+     </field>
+    </record>
     
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Real Estate</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,kanban,form</field>
     </record>
 
 <!--    &lt;!&ndash; This Menu Item will appear in the Upper bar, That's why It needs NO parent or action &ndash;&gt;-->

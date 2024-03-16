@@ -15,6 +15,7 @@
                         <group>
 <!--                        <field name="description" />-->
                             <field name="name"/>
+                            <field name="department_id" />
                             <field name="request"/>
                             <field name="date"/>
                         </group>
@@ -29,7 +30,9 @@
                       <page string="Details">
                             <group>
                                 <group>
-                            <field name="reason" invisible = "(request != 'HR Letter')"/>
+                                    <field name="reason" invisible = "(request != 'HR Letter')"/>
+                                    <field name="project" invisible = "(request != 'Expenses')"/>
+
 
                                 </group>
                             </group>
@@ -37,6 +40,7 @@
 
                       <page string="Approvals">
                           <group>
+<!--                              <field name="approve_manager_id"/>-->
 <!--                              <field name="manager_id"/>-->
                           </group>
 
