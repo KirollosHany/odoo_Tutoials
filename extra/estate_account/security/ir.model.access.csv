@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+estate_account.access_estat_payment_wizard,access_estat_payment_wizard,estate_account.model_estat_payment_wizard,base.group_user,1,1,1,1
