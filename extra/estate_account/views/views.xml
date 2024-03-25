@@ -8,7 +8,8 @@
        <field name="arch" type="xml">
 
            <xpath expr="//button[@name='action_invoice']" position="replace">
-               <button name="%(estate_account.installment_wizard_action)d" type="action" string="Create Invoice" invisible="state in ['new','offer_received','offer_accepted']"/>
+               <button name="%(estate_account.installment_wizard_action)d" type="action" string="Create Invoice" invisible="state in ['new','offer_received','offer_accepted', 'approved1', 'approved2', 'approved3', 'reject']"/>
+
 
            </xpath>
 

@@ -30,6 +30,7 @@ Real Estate Property APP
         'views/estate_property_view.xml',
         "views/res_users_views.xml",
         "views/estate_menus.xml",
+        'views/res_settings.xml',
 
         # 'views/templates.xml',
     ],

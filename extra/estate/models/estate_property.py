@@ -22,6 +22,22 @@ class EstateProperty(models.Model):
     def _default_date_availability(self):
         return fields.Date.context_today(self) + relativedelta(months=3)
 
+    def manager_1(self):
+        manager1 = self.env['ir.config_parameter'].sudo().get_param('estate.manager1')
+        return int(manager1)
+
+    def manager_2(self):
+        manager1 = self.env['ir.config_parameter'].sudo().get_param('estate.manager2')
+        return int(manager1)
+
+    def manager_3(self):
+        manager1 = self.env['ir.config_parameter'].sudo().get_param('estate.manager3')
+        return int(manager1)
+
+    def manager_4(self):
+        manager1 = self.env['ir.config_parameter'].sudo().get_param('estate.manager4')
+        return int(manager1)
+
     # --------------------------------------- Fields Declaration ----------------------------------
 
     # Basic
@@ -56,12 +72,18 @@ class EstateProperty(models.Model):
     # Special
     state = fields.Selection(
         selection=[
+            ('draft', 'Draft'),
             ("new", "New"),
             ("offer_received", "Offer Received"),
             ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("canceled", "Canceled"),
-            ("Invoicing", "Create Invoice")
+            ('approved1', 'First Approval'),
+            ('approved2', 'Sec Approval'),
+            ('approved3', 'Third Approval'),
+            ('approved4', 'Forth Approval'),
+            ('reject', 'Rejected'),
+            ("Invoicing", "Create Invoice"),
         ],
         string="Status",
         required=True,
@@ -130,6 +152,38 @@ class EstateProperty(models.Model):
 
     # ---------------------------------------- Action Methods -------------------------------------
 
+    def manager_approval_1(self):
+        # print(self.env.user.id)
+        # print(self.manager_1())
+        if self.env.user.id == self.manager_1():
+            print('approve1')
+            return self.write({"state": "approved1"})
+        else:
+            raise UserError("You Must be A Manager to do this .")
+
+    def manager_approval_2(self):
+        if self.env.user.id == self.manager_2():
+            print('approve2')
+            return self.write({"state": "approved2"})
+        else:
+            raise UserError("You Must be A Manager to do this .")
+
+    def manager_approval_3(self):
+        if self.env.user.id == self.manager_3():
+            print('approve3')
+            return self.write({"state": "approved3"})
+        else:
+            raise UserError("You Must be A Manager to do this .")
+
+    def manager_approval_4(self):
+        if self.env.user.id == self.manager_4():
+            print('approve4')
+            return self.write({"state": "approved4"})
+        else:
+            raise UserError("You Must be A Manager to do this .")
+
+
+
     def action_sold(self):
         if "canceled" in self.mapped("state"):
             raise UserError("Canceled properties cannot be sold.")
@@ -146,3 +200,5 @@ class EstateProperty(models.Model):
         if "canceled" in self.mapped("state"):
             raise UserError("Invoicing properties cannot be Created.")
         return self.write({"state": "Invoicing"})
+
+###

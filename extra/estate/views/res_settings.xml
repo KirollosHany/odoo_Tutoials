@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="res_config_settings_view_form_estate" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.estate</field>
+            <field name="model">res.config.settings</field>
+            <field name="priority" eval="25"/>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="inside">
+                     <app data-string="Estate" string="Real Estate" name="estate" groups="estate.employee_manager">
+                        <h2>Real Estate Control Panel Configurations</h2>
+                        <div class="row mt16 o_settings_container" name="estate_setting_container">
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div>
+                                    <label for="manager_1"/>
+                                    <div class="text-muted">
+                                        the first Manager
+                                    </div>
+                                    <div>
+                                        <field name="manager_1"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div>
+                                    <label for="manager_2"/>
+                                    <div class="text-muted">
+                                        the sec Manager
+                                    </div>
+                                    <div>
+                                        <field name="manager_2"/>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div>
+                                    <label for="manager_3"/>
+                                    <div class="text-muted">
+                                        the third Manager
+                                    </div>
+                                    <div>
+                                        <field name="manager_3"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div>
+                                    <label for="manager_4"/>
+                                    <div class="text-muted">
+                                        the forth Manager
+                                    </div>
+                                    <div>
+                                        <field name="manager_4"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </app>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_estate_configuration" model="ir.actions.act_window">
+            <field name="name">Settings</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.config.settings</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+            <field name="context">{'module' : 'estate'}</field>
+        </record>
+
+        <menuitem id="estate_settings" name="Configration" parent="estate_settings_menu"
+                  action="action_estate_configuration" groups="estate.employee_manager"/>
+
+    </data>
+</odoo>

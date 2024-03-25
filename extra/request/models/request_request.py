@@ -46,7 +46,18 @@ class request(models.Model):
     )
     #
     date = fields.Datetime(string="Date", default=fields.Datetime.now(), readonly=1)
-   # f_app_name = fields.Many2one("employee_parent_id", string="Employee Name", tracking=True )
+
+    # manager_id = fields.Many2one('hr.employee', string='Direct Manager', compute='_compute_manager_id', store=True)
+    #
+    # @api.depends('employee_id')
+    # def _compute_manager_id(self):
+    #     for record in self:
+    #         if record.employee_id:
+    #             record.manager_id = record.employee_id.parent_id.id
+    #         else:
+    #             record.manager_id = False
+
+# f_app_name = fields.Many2one("employee_parent_id", string="Employee Name", tracking=True )
    #  manager_id = fields.Many2one('hr.employee', string='Manager', tracking=True, check_company=True)
 
 

@@ -41,7 +41,7 @@
                       <page string="Approvals">
                           <group>
 <!--                              <field name="approve_manager_id"/>-->
-<!--                              <field name="manager_id"/>-->
+<!--                              <field name="coach_id"/>-->
                           </group>
 
                       </page>
