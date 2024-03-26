@@ -25,10 +25,13 @@ class EstateProperty(models.Model):
     def manager_1(self):
         manager1 = self.env['ir.config_parameter'].sudo().get_param('estate.manager1')
         return int(manager1)
+        tracking = True
+
 
     def manager_2(self):
         manager1 = self.env['ir.config_parameter'].sudo().get_param('estate.manager2')
         return int(manager1)
+        tracking = True
 
     def manager_3(self):
         manager1 = self.env['ir.config_parameter'].sudo().get_param('estate.manager3')
@@ -89,6 +92,7 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         default="new",
+        tracking=True
     )
     active = fields.Boolean("Active", default=True)
 
@@ -153,20 +157,30 @@ class EstateProperty(models.Model):
     # ---------------------------------------- Action Methods -------------------------------------
 
     def manager_approval_1(self):
-        # print(self.env.user.id)
-        # print(self.manager_1())
-        if self.env.user.id == self.manager_1():
-            print('approve1')
-            return self.write({"state": "approved1"})
-        else:
-            raise UserError("You Must be A Manager to do this .")
+        # # print(self.env.user.id)
+        # # print(self.manager_1())
+        # if self.env.user.id == self.manager_1():
+        #     print('approve1')
+        #     return self.write({"state": "approved1"})
+        # else:
+        #
+        #     raise UserError("You Must be A Manager to do this .")
+
+        if not self.env.user.has_group('estate.employee_manager1'):
+            raise UserError("Only Admin users can cancel properties.")
+        return self.write({"state": "approved1"})
+
 
     def manager_approval_2(self):
-        if self.env.user.id == self.manager_2():
-            print('approve2')
-            return self.write({"state": "approved2"})
-        else:
-            raise UserError("You Must be A Manager to do this .")
+        # if self.env.user.id == self.manager_2():
+        #     print('approve2')
+        #     return self.write({"state": "approved2"})
+        # else:
+        #     raise UserError("You Must be A Manager to do this .")
+        if not self.env.user.has_group('estate.employee_manager2'):
+            raise UserError("Only Admin users can cancel properties.")
+        return self.write({"state": "approved2"})
+
 
     def manager_approval_3(self):
         if self.env.user.id == self.manager_3():

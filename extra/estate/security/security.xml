@@ -17,5 +17,17 @@
             <field name="implied_ids" eval="[(4, ref('estate.employee_user'))]"/>
         </record>
 
+          <record id="employee_manager1" model="res.groups">
+            <field name="name">Manager1</field>
+            <field name="category_id" ref="estate_security_cat"/>
+            <field name="implied_ids" eval="[(4, ref('estate.employee_user'))]"/>
+        </record>
+
+         <record id="employee_manager2" model="res.groups">
+            <field name="name">Manager2</field>
+            <field name="category_id" ref="estate_security_cat"/>
+            <field name="implied_ids" eval="[(4, ref('estate.employee_user'))]"/>
+        </record>
+
     </data>
 </odoo>
