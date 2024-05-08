@@ -1,0 +1,29 @@
+<odoo>
+    <record id="amo_fouad_view_form" model="ir.ui.view">
+        <field name="name">amo.fouad.view.form</field>
+        <field name="model">amo.fouad</field>
+        <field name="arch" type="xml">
+            <form string="Amo Fouad">
+                <header>
+                    <button name="action_sold" type="object" string="Sold" invisible="state != 'new'" class="oe_highlight"/>
+                    <button name="action_cancel" type="object" string="Cancel" class="btn-warning"/>
+                    <button name="action_invoice" type="object" string="Create Invoice" invisible="state != 'sold'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new"/>
+                </header>
+                <sheet>
+
+                     <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="state != 'new'"/>
+                        </h1>
+                     </div>
+
+                    <group>
+                        <field name="name"/>
+
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

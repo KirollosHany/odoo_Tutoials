@@ -64,7 +64,7 @@ class RealEstateInstaWizard(models.TransientModel):
                     self.env["account.move"].create(invoice_vals)
                     prop.write({'state': 'Invoicing'})
                     raise UserError("Invoices have been created for this property.")
-                    return {
-                        'type': 'ir.actions.act_window_close'}  # This line might be removed, depending on your requirement
-
-                return {'type': 'ir.actions.act_window_close'}
+                #     return {
+                #         'type': 'ir.actions.act_window_close'}  # This line might be removed, depending on your requirement
+                #
+                # return {'type': 'ir.actions.act_window_close'}

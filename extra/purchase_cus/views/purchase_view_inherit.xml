@@ -1,0 +1,21 @@
+<odoo>
+
+    <!-- Inherit Form View to Modify it -->
+    <record id="purchase_view_form_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//button[@name='button_confirm']" position="after">
+                <button name="manager_approval_1" type="object" string="First Manager Approve" invisible="state != 'offer_accepted'"  />
+                <button name="manager_approval_2" type="object" string="Sec Approve" invisible="state != 'approved1'"/>
+                <button name="manager_approval_3" type="object" string="Third Approve" invisible="state != 'approved2'"/>
+                <button name="manager_approval_4" type="object" string="Forth Approve" invisible="state != 'approved3'"/>
+                <!-- Add your fields or attributes here -->
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>

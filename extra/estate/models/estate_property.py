@@ -9,12 +9,11 @@ from odoo.tools import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
-
     # ---------------------------------------- Private Attributes ---------------------------------
 
     _name = "estate.property"
     _description = "Real Estate Property"
-    _inherit = ['mail.thread.cc',  'mail.activity.mixin']
+    _inherit = ['mail.thread.cc', 'mail.activity.mixin']
     _order = "id desc"
 
     # ---------------------------------------- Default Methods ------------------------------------
@@ -22,16 +21,15 @@ class EstateProperty(models.Model):
     def _default_date_availability(self):
         return fields.Date.context_today(self) + relativedelta(months=3)
 
-    def manager_1(self):
-        manager1 = self.env['ir.config_parameter'].sudo().get_param('estate.manager1')
-        return int(manager1)
-        tracking = True
-
+    # def manager_1(self):
+    #     manager1 = self.env['ir.config_parameter'].sudo().get_param('estate.manager1')
+    #     return int(manager1)
+    #     tracking = True
 
     def manager_2(self):
         manager1 = self.env['ir.config_parameter'].sudo().get_param('estate.manager2')
         return int(manager1)
-        tracking = True
+
 
     def manager_3(self):
         manager1 = self.env['ir.config_parameter'].sudo().get_param('estate.manager3')
@@ -79,13 +77,13 @@ class EstateProperty(models.Model):
             ("new", "New"),
             ("offer_received", "Offer Received"),
             ("offer_accepted", "Offer Accepted"),
-            ("sold", "Sold"),
             ("canceled", "Canceled"),
             ('approved1', 'First Approval'),
             ('approved2', 'Sec Approval'),
             ('approved3', 'Third Approval'),
             ('approved4', 'Forth Approval'),
             ('reject', 'Rejected'),
+            ("sold", "Sold"),
             ("Invoicing", "Create Invoice"),
         ],
         string="Status",
@@ -147,6 +145,45 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
+    manager_1 = fields.Many2one(
+        'res.users',
+        string="First Manager",
+        help="Department manager assigned to this property",
+        compute='_compute_manager_1',
+        store=True
+    )
+
+    @api.depends('user_id')
+    def _compute_manager_1(self):
+        for record in self:
+            if record.user_id and record.user_id.employee_ids:
+                manager_employee = record.user_id.employee_ids[0].parent_id
+                if manager_employee:
+                    manager_user = manager_employee.user_id
+                    if manager_user:
+                        record.manager_1 = manager_user
+            else:
+                record.manager_1 = False
+
+    def manager_approval_1(self):
+        # Compute manager_1 if not set
+        self._compute_manager_1()
+
+        # Get the user who created the property
+        created_user = self.user_id
+
+        # Get the parent user of the current user
+        current_user_parent = self.env.user
+
+        # Check if the current user's parent matches the user who created the property
+        if not created_user or current_user_parent != self.manager_1:
+            raise UserError("Only the parent user of the creator can approve this property.")
+
+        # Update the state to 'approved1'
+        self.write({"state": "approved1"})
+
+        return True
+
     # ------------------------------------------ CRUD Methods -------------------------------------
 
     # @api.ondelete(at_uninstall=False)
@@ -156,31 +193,29 @@ class EstateProperty(models.Model):
 
     # ---------------------------------------- Action Methods -------------------------------------
 
-    def manager_approval_1(self):
-        # # print(self.env.user.id)
-        # # print(self.manager_1())
-        # if self.env.user.id == self.manager_1():
-        #     print('approve1')
-        #     return self.write({"state": "approved1"})
-        # else:
-        #
-        #     raise UserError("You Must be A Manager to do this .")
-
-        if not self.env.user.has_group('estate.employee_manager1'):
-            raise UserError("Only Admin users can cancel properties.")
-        return self.write({"state": "approved1"})
-
+    # def manager_approval_1(self):
+    #     # # print(self.env.user.id)
+    #     # # print(self.manager_1())
+    #     # if self.env.user.id == self.manager_1():
+    #     #     print('approve1')
+    #     #     return self.write({"state": "approved1"})
+    #     # else:
+    #     #
+    #     #     raise UserError("You Must be A Manager to do this .")
+    #
+    #     if not self.env.user.has_group('estate.employee_manager1'):
+    #         raise UserError("Only Admin users can cancel properties.")
+    #     return self.write({"state": "approved1"})
 
     def manager_approval_2(self):
-        # if self.env.user.id == self.manager_2():
-        #     print('approve2')
-        #     return self.write({"state": "approved2"})
-        # else:
-        #     raise UserError("You Must be A Manager to do this .")
-        if not self.env.user.has_group('estate.employee_manager2'):
-            raise UserError("Only Admin users can cancel properties.")
-        return self.write({"state": "approved2"})
-
+        if self.env.user.id == self.manager_2():
+            print('approve2')
+            return self.write({"state": "approved2"})
+        else:
+            raise UserError("You Must be A Manager to do this .")
+        # if not self.env.user.has_group('estate.employee_manager2'):
+        #     raise UserError("Only Admin users can cancel properties.")
+        # return self.write({"state": "approved2"})
 
     def manager_approval_3(self):
         if self.env.user.id == self.manager_3():
@@ -195,8 +230,6 @@ class EstateProperty(models.Model):
             return self.write({"state": "approved4"})
         else:
             raise UserError("You Must be A Manager to do this .")
-
-
 
     def action_sold(self):
         if "canceled" in self.mapped("state"):
@@ -215,4 +248,6 @@ class EstateProperty(models.Model):
             raise UserError("Invoicing properties cannot be Created.")
         return self.write({"state": "Invoicing"})
 
-###
+    ###
+
+

@@ -13,10 +13,11 @@
 <!--                    <button name="sold_action" type="object" string="Sold" class="btn-warning" invisible="state in ('sold' , 'canceled')"/>-->
 <!--                    <button name="cancel_action" type="object" string="Cancel" class="btn-danger" invisible="state in ['sold', 'new']"/>-->
 
-                     <button name="manager_approval_1" type="object" string="First Approve" invisible="state not in ('new','offer_accepted','offer_received')" />
-                    <button name="manager_approval_2" type="object" string="Sec Approve" visible="state in ('approved1')" invisible="state not in ('new','offer_accepted','offer_received', 'approved1')"/>
-                    <button name="manager_approval_3" type="object" string="Third Approve" visible="state in ('approved2')" invisible="state not in ('new','offer_accepted','offer_received', 'approved2')"/>
-                    <button name="manager_approval_4" type="object" string="Forth Approve" visible="state in ('approved3')" invisible="state not in ('new','offer_accepted','offer_received', 'approved3')"/>
+                    <button name="manager_approval_1" type="object" string="First Manager Approve" invisible="state != 'offer_accepted'"  />
+<!--                     <button name="manager_approval_1" type="object" string="First Approve" invisible="state not in ('new','offer_accepted','offer_received')" />-->
+                    <button name="manager_approval_2" type="object" string="Sec Approve" invisible="state != 'approved1'"/>
+                    <button name="manager_approval_3" type="object" string="Third Approve" invisible="state != 'approved2'"/>
+                    <button name="manager_approval_4" type="object" string="Forth Approve" invisible="state != 'approved3'"/>
 <!--                    <button name="action_sold" type="object" string="Sold" invisible="state  not in ['new','offer_received','']"/>-->
                     <button name="action_sold" type="object" string="Sold" invisible="state in ['new','offer_received','offer_accepted', 'approved1', 'approved2', 'approved3', 'reject']" class="oe_highlight"/>
                     <button name="action_cancel" type="object" string="Cancel" invisible="state not in ['new','offer_received','offer_accepted']"/>
@@ -79,6 +80,7 @@
                                 <group>
                                     <field name="user_id"/>
                                     <field name="buyer_id"/>
+                                    <field name="manager_1"/>
                                 </group>
                             </group>
                         </page>

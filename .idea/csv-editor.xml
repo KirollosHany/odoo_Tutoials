@@ -38,6 +38,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/odoo/addons/l10n_in/data/l10n_in.port.code.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/odoo/addons/test_base_import/security/ir.model.access.csv">
           <value>
             <Attribute>

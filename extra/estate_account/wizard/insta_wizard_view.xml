@@ -1,3 +1,4 @@
+
 <odoo>
     <record id="installment_view_form" model="ir.ui.view">
         <field name="name">installment.view.form</field>
