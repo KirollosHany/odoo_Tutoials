@@ -184,6 +184,8 @@ class EstateProperty(models.Model):
 
         return True
 
+
+
     # ------------------------------------------ CRUD Methods -------------------------------------
 
     # @api.ondelete(at_uninstall=False)
